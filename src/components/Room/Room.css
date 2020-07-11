@@ -1,0 +1,55 @@
+* {
+  background-color: #282c34;
+  color: #61dafb;
+  font-family: "Courier New", Courier, monospace;
+}
+
+.Room {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  top: 98vh;
+}
+
+.rooms {
+  display: flex;
+  flex-direction: column;
+  border: 0.2em solid #61dafb;
+  border-radius: 0.5em;
+}
+
+.room {
+  display: flex;
+  width: 200px;
+  justify-content: space-between;
+  margin: 5px;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.room p {
+  background-color: initial;
+}
+
+.room :not(:first-child) {
+  color: white;
+}
+
+.rooms :not(:first-child):hover {
+  background-color: #3a404c;
+}
+
+.black {
+  background-color: #31353f;
+}
+
+.black p {
+  background-color: initial;
+}
+
+.center {
+  justify-content: center;
+}
