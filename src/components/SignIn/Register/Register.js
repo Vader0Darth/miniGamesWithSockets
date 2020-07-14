@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { fRegister } from "../../../servises/login/login";
 import "./Register.css";
+import { useHistory } from "react-router-dom";
 
-export const Register = ({ changeToRegPage }) => {
-  //   useEffect(() => {
-  //     fLogin("email", "pass").then((data) => {
-  //       console.log(data);
-  //     });
-  //   }, []);
-
+export const Register = ({ pushError }) => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
 
+  const his = useHistory();
+
   const register = () => {
-    fRegister(email, name, password).then((data) => {
+    fRegister(email, password, name).then((data) => {
       console.log(data);
+      if (data.status === "true") {
+        pushError("Registered", false);
+        his.push("/");
+      } else pushError(data.error, true);
     });
   };
 
@@ -56,7 +57,12 @@ export const Register = ({ changeToRegPage }) => {
       <div className={"name loginBtn"} onClick={register}>
         Register
       </div>
-      <div className={"name loginBtn small"} onClick={changeToRegPage}>
+      <div
+        className={"name loginBtn small"}
+        onClick={() => {
+          his.push("/");
+        }}
+      >
         does you have an account?
       </div>
     </div>

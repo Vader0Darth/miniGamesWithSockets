@@ -1,12 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
-import { Room } from "./Room/Room";
-import { App } from "./Game/App";
+import { Room } from "./TicTacToe/Room/Room";
+import { App } from "./TicTacToe/Game/App";
 import socketIOClient from "socket.io-client";
-import { Login } from "./Login/Login";
+import { Login } from "./SignIn/Login/Login";
+import { Register } from "./SignIn/Register/Register";
 
 import "../index.css";
-import { fLogin } from "../servises/login/login";
+import {
+  Switch,
+  BrowserRouter as Router,
+  Route,
+  useHistory,
+} from "react-router-dom";
+import { ErrorStack } from "./errorStack/ErrorStack";
 
 const ENDPOINT = "http://localhost:80";
 
@@ -16,12 +23,16 @@ export const Main = () => {
   const [logged, setLogged] = useState(false);
   const [isOnRoom, setIsOnRoom] = useState(null);
 
+  const history = useHistory();
+
   const [enemy, setEnemy] = useState(null);
   const [room, setRoom] = useState(null);
 
+  const [errors, setError] = useState([]);
+  const errorsRef = useRef(errors);
+  errorsRef.current = errors;
+
   useEffect(() => {
-    let sda = socketIOClient(ENDPOINT);
-    console.log(sda);
     setSocket(socketIOClient(ENDPOINT));
   }, []);
 
@@ -75,25 +86,33 @@ export const Main = () => {
       socket.emit("turn", { rid: rid, cid: cid, roomId: room.id });
   };
 
+  const pushError = (error, isError) => {
+    let errorObj = new Object();
+    errorObj.message = error;
+    errorObj.isError = isError;
+    setTimeout(() => {
+      errorsRef.current.splice(0, 1);
+      setError([...errorsRef.current]);
+      // console.log(errorsRef.current);
+    }, 8000);
+
+    setError([...errors, errorObj]);
+  };
+
   return (
-    <div className={"Page"}>
-      {logged ? (
-        <>
-          {isOnRoom ? (
-            <App room={room} enemy={enemy} turn={tryToTurn} />
-          ) : (
-            <Room
-              passGameData={passGameData}
-              rooms={rooms}
-              connect={connect}
-              createRoom={createRoom}
-              socket={socket}
-            />
-          )}
-        </>
-      ) : (
-        <Login login={passGameData} />
-      )}
-    </div>
+    <Router>
+      <ErrorStack errors={errors} />
+      <Switch>
+        <Route exact path={"/"}>
+          <Login pushError={pushError} />
+        </Route>
+        <Route exact path={"/register"}>
+          <Register pushError={pushError}/>
+        </Route>
+        <Route exact path={"/mainMenu"}>
+          <Room rooms={rooms} connect={connect} createRoom={createRoom} />
+        </Route>
+      </Switch>
+    </Router>
   );
 };

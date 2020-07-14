@@ -1,15 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { fLogin, fMain } from "../../../servises/login/login";
+import React, { useState } from "react";
+import { fLogin } from "../../../servises/login/login";
 import "./Login.css";
+import { useHistory } from "react-router-dom";
 
-export const Login = ({ changeToRegPage }) => {
+export const Login = ({ pushError }) => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
+
+  const his = useHistory();
 
   const login = () => {
     fLogin(email, pass).then((data) => {
       console.log(data);
+      if (data.status === "true") {
+        localStorage.setItem("name", email);
+        his.push("mainMenu");
+      } else pushError(data.error);
     });
+  };
+
+  const changeToRegPage = () => {
+    his.push("/register");
   };
 
   return (

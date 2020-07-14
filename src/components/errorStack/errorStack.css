@@ -1,0 +1,37 @@
+.errStack {
+  position: absolute;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  top: 0;
+  right: 1em;
+}
+
+.errStack .error {
+  border: 1px solid red;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
+  width: 20em;
+}
+
+.errStack .error .name { 
+  color: #e54747;
+  font-family: monospace;
+  width: 18em;
+}
+
+.errStack .success {
+  border: 1px solid green;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
+  width: 20em;
+}
+
+.errStack .success .name { 
+  color: green;
+  font-family: monospace;
+  width: 18em;
+}
