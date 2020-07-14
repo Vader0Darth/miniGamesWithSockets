@@ -6,8 +6,9 @@ import socketIOClient from "socket.io-client";
 import { Login } from "./Login/Login";
 
 import "../index.css";
+import { fLogin } from "../servises/login/login";
 
-const ENDPOINT = "http://127.0.0.1:4000";
+const ENDPOINT = "http://localhost:80";
 
 export const Main = () => {
   const [socket, setSocket] = useState(null);
@@ -19,6 +20,8 @@ export const Main = () => {
   const [room, setRoom] = useState(null);
 
   useEffect(() => {
+    let sda = socketIOClient(ENDPOINT);
+    console.log(sda);
     setSocket(socketIOClient(ENDPOINT));
   }, []);
 

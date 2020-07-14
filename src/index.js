@@ -3,10 +3,11 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import { Main } from "./components/Main";
+import { AcsessPage } from "./components/MainPages/AcsessPage";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Main />
+    <AcsessPage />
   </React.StrictMode>,
   document.getElementById("root")
 );
